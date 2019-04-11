@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ecommerce Project</title>
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	<!--link rel="stylesheet" href="http://resources/demos/style.css"-->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<script>	$( function() {
+
+	$( "#accordion" ).accordion({
+        heightStyle: "content"
+	});
+	} );
+
+
+	$( function() {
+	$( "#toppingaccordion" ).accordion({
+        heightStyle: "content"
+	});
+	} );
+
+    $( function() {
+        $( "#sidesaccordion" ).accordion({
+            heightStyle: "content"
+        });
+    } );
+
+    $( function() {
+        $( "#drinkaccordion" ).accordion({
+            heightStyle: "content"
+        });
+    } );
+
+	</script>
+
+</head>
+
+
+
+<body>
+
+
+<!-- Start of login page: #one -->
+<div data-role="page" id="login">
+
+	<div data-role="header">
+		<h1>The Specialist Pizza House</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		<h2>Welcome!</h2>
+
+		<b>
+        Welcome to the application, login or register.
+		</b>
+
+		<div>
+			<ul id = "registered-msg"></ul>
+		</div>
+
+     <p>Enter your login details</p>
+			  Username <input type="text" name="login_username" id="login_username" value="">
+			  Password <input type="text" name="login_pass" id="login_pass" value="">
+              <button class="ui-btn" id="loginButton">Submit</button>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-theme="a">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div>
+
+<!-- /end of login page one -------------------------------------------------->
+
+<!-- Start of Managers Page: #manager --------------------------------------->
+<div data-role="page" id="manager" data-theme="a">
+
+	<div data-role="header">
+		<h1>The Specialist Pizza House - Manager's Page</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		<h2>Menu</h2>
+
+		<a class="ui-button ui-widget ui-corner-all" href="{{ path('show-mgr-order') }}">Manager menu</a>
+
+
+
+		<br>
+
+		<p>Enter the dates to search for revenue. Use the format YYYY-MM-DD HH:MM:SS. Example 2019-04-07 00:00:00</p>
+		Date: (from) <input type="text" name="datef" id="datef" placeholder="Use the format YYYY-MM-DD HH:MM:SS">
+		Date: (to)  <input type="text" name="datet" id="datet" >
+		<button class="ui-btn" id="date-sub">Submit</button>
+
+
+		<br>
+
+
+			<div>The total revenue for the period entered : €<span id = "revenue"></span>
+			</div>
+
+
+		<br>
+
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Manager's Page Footer</h4>
+	</div><!-- /footer -->
+</div>
+
+<!-- /end of Managers' page  ------------------------------------------------------>
+
+<!-- /Start of Driver' page  ------------------------------------------------------>
+
+<div data-role="page" id="driver" data-theme="a">
+
+	<div data-role="header">
+		<h1>The Specialist Pizza House - Driver's Page</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		<h2>Driver's Menu</h2>
+
+		<a class="ui-button ui-widget ui-corner-all" href="{{ path('showall-order') }}">Show orders</a>
+
+	<br>
+		<br>
+		<br>
+
+			<b>Enter the name of your location to get weather forecast:- </b>
+<!--form method="GET" action="get.php"-->
+		Location <input type="text" name="q" id="q" required>
+		<button class="ui-btn" id="getweather">Submit</button>
+</form>
+
+
+		<br>
+		<br>
+		<br>
+
+
+		<div id ="weather-request">
+
+		</div>
+
+	</div> <!-- /content -->
+
+	<div data-role="footer">
+		<h4>Driver's Page Footer</h4>
+	</div><!-- /footer -->
+</div>
+
+
+<!-- /End of Driver' page  ------------------------------------------------------>
+
+
+<!----------------------pizza page-------------------->
+
+<div data-role="page" id="pizza" data-theme="a">
+	<div data-role="header">
+		<h1>The Specialist Pizza House</h1>
+	</div><!-- /header -->
+
+
+
+	<div role="main" class="ui-content">
+
+			<a class="ui-button ui-widget ui-corner-all" href="#checkout">Checkout</a>
+
+
+		<a href="{{ path('previous-order') }}">
+			<button type="submit" data-theme="b" name="orderhistory" id="orderhistory" >Order History</span>
+			</button></a>
+
+
+		<a href="{{ path('order') }}">
+			<button type="submit" data-theme="b" name="uploadnewAssets" id="UpLoadNewAssetButton" >Check out test to twig</span>
+			</button>
+		</a>
+			<a class="ui-button ui-widget ui-corner-all" href="#topping">Topping Menu</a>
+
+		<h2>Choose your Pizzas</h2>
+
+
+		<div id="accordion">
+			<h3>Hawaiian pizza (small)</h3>
+			<div>
+				<button id ="add-H-SPizza">Choose Pizza &euro;5.00</button>
+				<button id ="remove-H-SPizza">Remove Pizza </button>
+			</div>
+
+			<h3>Hawaiian  pizza (medium)</h3>
+			<div>
+				<button id ="add-H-MPizza">Choose Pizza &euro;10.00</button>
+				<button id ="remove-H-MPizza">Remove Pizza</button>
+			</div>
+
+			<h3>Hawaiian  pizza (large)</h3>
+			<div>
+				<button id="add-H-LPizza">Choose Pizza &euro;11.00</button>
+				<button id="remove-H-LPizza">Remove Pizza</button>
+			</div>
+
+			<h3>New Yorker pizza (small)</h3>
+			<div>
+				<button id="add-N-SPizza">Choose Pizza &euro;5.00</button>
+				<button id="remove-N-SPizza">Remove Pizza</button>
+			</div>
+
+			<h3>New Yorker pizza (medium)</h3>
+			<div>
+				<button id="add-N-MPizza">Choose Pizza &euro;10.00</button>
+				<button id="remove-N-MPizza">Remove Pizza</button>
+			</div>
+
+			<h3>New Yorker pizza (large)</h3>
+			<div>
+				<button id="add-N-LPizza">Choose Pizza &euro;11.00</button>
+				<button id="remove-N-LPizza">Remove Pizza</button>
+			</div>
+
+			<h3>House Special pizza (small)</h3>
+			<div>
+				<button id="add-HS-SPizz">Choose Pizza &euro;5.00</button>
+				<button id="remove-HS-SPizza">Remove Pizza</button>
+			</div>
+
+			<h3>House Special pizza (medium)</h3>
+			<div>
+				<button id="add-HS-MPizza">Choose Pizza &euro;10.00</button>
+				<button id="remove-HS-MPizza">Remove Pizza</button>
+			</div>
+
+			<h3>House Special pizza (large)</h3>
+			<div>
+				<button id="add-HS-LPizza">Choose Pizza &euro;11.00</button>
+				<button id="remove-HS-LPizza">Remove Pizza</button>
+			</div>
+
+			<h3>Custom pizza (small)</h3>
+			<div>
+				<button id="add-C-SPizza">Choose Pizza &euro;5.00</button>
+				<button id="remove-C-SPizza">Remove Pizza</button>
+			</div>
+
+			<h3>Custom pizza (medium)</h3>
+			<div>
+				<button id="add-C-MPizza" >Choose Pizza &euro;10.00</button>
+				<button id="remove-C-MPizza" >Remove Pizza</button>
+			</div>
+
+			<h3>Custom pizza (large)</h3>
+			<div>
+				<button id="add-C-LPizza">Choose Pizza &euro;11.00</button>
+				<button id="remove-C-LPizza">Remove Pizza</button>
+			</div>
+		</div>
+
+
+		
+		<!----p><a href="#topping" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">Choose a Topping</a></p---->
+
+        <!------------------------display the cart on the pizza page------------------------------>
+
+		<div>
+			<ul id = "cart-list"></ul>
+		</div>
+
+		<div id = "cost-Total-pizza">
+		</div>
+
+		<div id = "quantity-pizza">
+		</div>
+
+
+
+	</div><!-- /content -->
+
+
+	<div data-role="footer">
+		<h4>Pizza Page Footer</h4>
+	</div>
+
+</div>
+	<!--------------------registration page------------------->
+
+
+
+<div data-role="page" id="register" data-theme="a">
+
+<div data-role="header">
+		<h1>Register</h1>
+	</div><!-- /header -->
+
+<div role="main" class="ui-content">
+		
+
+<!-----------------------Registration Form-------------------->
+<h2>Registration Page</h2>
+           
+            <p>To register as a user, please enter your details in the form below</p>
+
+	<div>
+		<ul id = "registered-msg"></ul>
+	</div>
+			
+						Username <input type="text" name="reg_username" id="reg_username" value="">
+						Password <input type="text" name="reg_password" id="reg_password" value="">
+						Name     <input type="text" name="name" id="name" value="">
+						Address  <input type="text" name="address" id="address" value="">
+								 <input type="hidden" name="usertype" id="usertype" value="customer">
+
+	
+					<button type="submit" data-theme="b" name="submit registration" id="registerButton" >Submit</button>
+			
+			<!-----------------------end of Registration Form-------------------->
+
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4>Registration Page Footer</h4>
+	</div><!-- /footer -->
+</div> <!----end registration page  ----------->	
+	
+
+<!-----------------------Choose your topping page-------------------->	
+<div data-role="page" id="topping" data-theme="a">
+
+<div data-role="header">
+		<h1>The Specialist Pizza House</h1>
+	</div><!-- /header -->
+
+<div role="main" class="ui-content">
+
+
+		<a class="ui-button ui-widget ui-corner-all" href="#pizza">Pizza Menu</a>
+		<a class="ui-button ui-widget ui-corner-all" href="#sides">Side Dish Menu</a>
+		<a class="ui-button ui-widget ui-corner-all" href="#checkout">Checkout</a>
+		
+<h2>Choose a topping</h2>
+
+	<div id="toppingaccordion">
+		<h3>No Topping</h3>
+		<div>
+			<button id ="no-topping">No Topping: &euro;0.00</button>
+			<!--button id ="#">Drop Pizza </button-->
+		</div>
+
+		<h3>Ham Topping</h3>
+		<div>
+			<button id ="ham-topping">Add some Ham Topping :&euro;1.00</button>
+			<button id ="no-ham-topping">No Ham Topping  </button>
+		</div>
+
+		<h3>Pineapple</h3>
+		<div>
+			<button id ="pineapple-topping">Add some Pineapple Topping :&euro;1.00</button>
+			<button id ="no-pineapple-topping">No Pineapple Topping  </button>
+		</div>
+
+		<h3>Mushroom</h3>
+		<div>
+		   <button id ="mushroom-topping">Add some Mushroom Topping : &euro;1.00"</button>
+		   <button id ="no-mushroom-topping">"No Mushroom Topping " </button>
+		</div>
+
+		<h3>Cheese</h3>
+		<div>
+	       <button id ="cheese-topping">add some Cheese Topping : &euro;1.00"</button>
+		   <button id ="no-cheese-topping">No Cheese Topping </button>
+		</div>
+	</div>
+
+		<div>
+			<ul id = "topping-list">
+
+			</ul>
+		</div>
+
+		<div>Total Cost of items in your basket : €<span id = "cost-Total-topping"></span>
+			</div>
+
+		<div>Total quantity of items in your basket is <span id = "quantity-topping"></span> items</div>
+ 			
+			
+		<!---------p><a href="#sides" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">Sides</a></p------>
+
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4>Topping Page Footer</h4>
+	</div><!-- /footer -->
+</div>  <!----end topping page  ----------->
+
+
+
+
+<!-----------------------Choose your sides page-------------------->	
+<div data-role="page" id="sides" data-theme="a">
+
+<div data-role="header">
+		<h1>The Specialist Pizza House</h1>
+	</div><!-- /header -->
+
+<div role="main" class="ui-content">
+
+	<a class="ui-button ui-widget ui-corner-all" href="#topping">Topping Menu</a>
+	<a class="ui-button ui-widget ui-corner-all" href="#drinks">Drinks Menu</a>
+	<a class="ui-button ui-widget ui-corner-all" href="#checkout">Checkout</a>
+		
+<h2>Choose a side dish</h2>
+
+	<div id="sidesaccordion">
+		<h3>Wedges</h3>
+		<div>
+			<button id ="wedges">Add Wedges to the cart: &euro;5.00</button>
+			<button id ="no-wedges">Remove Wedges from the cart  </button>
+		</div>
+
+		<h3>Garlic Bread</h3>
+		<div>
+			<button id ="garlic-bread">Add Garlic bread to the cart : &euro;5.00</button>
+			<button id ="no-garlic-bread">Remove the Garlic bread from the cart  </button>
+		</div>
+	</div>
+
+	<div>
+		<ul id = "sides-list">
+
+		</ul>
+	</div>
+
+	<div>Total Cost of items in your basket : €<span id = "cost-Total-sides"></span>
+	</div>
+
+	<div>Total quantity of items in your basket is <span id = "quantity-sides"></span> items
+	</div>
+		<!----------p><a href="#drinks" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">drinks</a></p------------------------>
+
+	</div><!-- /content -->
+	<div data-role="footer">
+		<h4>Sides Footer</h4>
+	</div><!-- /footer -->
+</div>  <!----e  <!----end  sides page  ----------->
+
+
+
+<!-----------------------Choose your drink page-------------------->	
+<div data-role="page" id="drinks" data-theme="a">
+
+	<div data-role="header">
+		<h1>The Specialist Pizza House</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+
+		<a class="ui-button ui-widget ui-corner-all" href="#sides">Side dish Menu</a>
+		<a class="ui-button ui-widget ui-corner-all" href="#checkout">Checkout</a>
+
+		<h2>Choose a Drink</h2>
+
+		<div id="drinkaccordion">
+			<h3>Water Drink</h3>
+			<div>
+				<button id ="water">Add a bottle of Water  : &euro;1.00</button>
+				<button id ="no-water">Remove Water Drink </button>
+			</div>
+
+			<h3>Orange Drink</h3>
+			<div>
+				<button id ="orange">Add a bottle of orange  : &euro;1.00</button>
+				<button id ="no-orange">Remove orange drink </button>
+			</div>
+		</div>
+
+
+		<div>
+			<ul id = "drinks-list">
+
+			</ul>
+		</div>
+
+		<div>Total Cost of items in your basket : €<span id = "cost-Total-drink"></span>
+		</div>
+
+
+		<div>Total quantity of items in your basket is <span id = "quantity-drink"></span> items
+		</div>
+
+		<!---p><a href="#" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">add to basket</a></p--->
+
+	</div><!-- /content -->
+	<div data-role="footer">
+		<h4>Drinks Page Footer</h4>
+</div><!-- /footer -->
+</div>  <!----end drinks page  ----------->
+
+<!-------------------------------CHECKOUT PAGE---------------->
+
+
+<div data-role="page" id="checkout" data-theme="a">
+
+	<div data-role="header">
+		<h1>The Specialist Pizza House</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+
+
+
+		<h2>Checkout</h2>
+
+		<a class="ui-button ui-widget ui-corner-all" href="#pizza">Back to Menu</a>
+		<a class="ui-button ui-widget ui-corner-all" id="addr">Checkout</a>
+
+
+
+		<br/>
+		<br/>
+
+        <b>These are the items in your basket:</b>
+		<br/>
+		<br/>
+		<div>
+			<ul id = "Check-out">
+
+			</ul>
+		</div>
+
+		<div>Total Cost of items in your basket : €<span id = "checkout-cost"></span>
+		</div>
+
+
+		<div>Total quantity of items in your basket is <span id = "checkout-quantity"></span> items
+
+			<a href="{{ path('order') }}"></a>
+		</div>
+
+
+
+		<!---p><a href="#" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">add to basket</a></p--->
+
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Checkout Page Footer</h4>
+	</div><!-- /footer -->
+</div>    <!----end checkout page  ----------->
+
+!-------------------------------confirm address details---------------->
+
+
+<div data-role="page" id="shipping" data-theme="a">
+
+	<div data-role="header">
+		<h1>The Specialist Pizza House</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+
+		<a class="ui-button ui-widget ui-corner-all" href="#pizza">Back to Menu</a>
+		<a class="ui-button ui-widget ui-corner-all" id="order">Place Order</a>
+
+		<h2>Customer Address</h2>
+
+		<br>
+		<br>
+
+		<div id = "address-loc">
+
+
+		</div>
+
+        <br>
+		<br>
+
+		<div id = "confirm-order">
+
+		</div>
+
+
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4> Shipping Page Footer</h4>
+	</div><!-- /footer -->
+</div>    <!----end checkout page  ----------->
+
+
+<!-------------------------------cend of confirm address details---------------->
+
+
+<!-----------------------------------------------JQUERY FUNCTIONS-------------------------------->
+
+<script>
+	// template for a pizza product
+
+    class Product {
+        constructor(item, name, price, qty) {
+            this.item = item;
+            this.name = name;
+            this.price = price;
+            this.qty = qty;
+        }
+    }
+
+
+    ////////////////////////////////////////////
+
+	//get revenue //
+
+
+    $("#date-sub").click(function () {
+
+        var df = $("#datef").val();
+        console.log(df);
+
+        var dt = $("#datet").val();
+        console.log(dt);
+
+        $.post("/order", {type: "revenue", datef: df, datet: dt})
+            .done(function (data) {
+                alert(data);
+                console.log(data);
+				//rev = data['revenue']['turnover'];//
+                rev = data[0]['revenue']['turnover'];
+                $("#revenue").html( rev );
+
+            });
+
+    });
+
+    //  get user address  ///
+
+    $( "#getweather"). click
+    (function()
+    {
+
+        var city = $("#q").val();
+        console.log(city);
+        alert("weather button pressed");
+
+
+        $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=city&units=metric&appid=749a45122c884e59e9da5349d3c9c9c0" , function( data )
+	{
+
+        /*console.log(data); */
+
+        main = data['weather'][0]['main'];
+        description = data['weather'][0]['description'];
+        windspeed = data['wind']['speed'];
+        temp = data['main']['temp'];
+
+        content = "<div>" + "<b>" + 'main:'  +  main + " , " + description + " / " + 'windspeed:' +  windspeed + " / " + 'temperature:' + temp  + "</b>" + "</div>";
+
+        $("#weather-request").html(content);
+    });
+
+    });
+
+
+
+
+
+	//  get user address from login records ///
+
+    $( "#addr"). click
+    (function()
+
+    {
+
+        alert("checkout pressed");
+        $.post("/order", {type: "find-addr"})
+                .done(function (data) {
+                    alert( "address found: " + data );
+                    window.location = "/index#shipping";
+                    $("#address-loc").html('We will deliver your order to : ' + data );
+
+                });
+
+
+    });
+
+    //  user order history
+
+    $( "#previous"). click
+    (function()
+
+    {
+        console.log();
+        alert("order history pressed");
+        $.post("/order/history", {type: "order-history"})
+            .done(function (data) {
+                alert( "order history found: " + data );
+                $("#hist-order").html( data );
+            });
+
+
+    });
+
+
+
+     $( "#order").click(function(){
+
+         var tCost =  totalCost();
+         var cartJson = JSON.stringify(listCart());
+         console.log('json' + cartJson);
+
+         // use jquery post to send the items in the cart to the /order page
+
+         $.post("/order", {orderItems: cartJson, totalcost : tCost })
+             .done(function (data)
+			 {
+                 alert("order ID " + data);
+                 //window.location = "/index#shipping";
+                 //$("#confirm-order").html('Your order has been placed. The order ID is ' + data);
+                 cart = [];
+                 window.location.replace( "/order/success");
+
+             }); //post
+
+
+
+             }); //function
+
+
+      // check out and display the cart to the user ///
+
+
+         function checkout() {
+             var cartArray = listCart();
+             console.log();
+             var output = " ";
+             for (var i in cartArray) {
+                 output += "<li>" + cartArray[i].item + "  " + cartArray[i].name + " " + cartArray[i].price + "  " + cartArray[i].qty + "  " + "</li>"
+             }
+
+
+                 $("#checkout").html(output) ;
+         }
+
+         // when login button pressed grab the username and password and save in  variables
+
+         $("#loginButton").click(function () {
+
+             var un = $("#login_username").val();
+             console.log(un);
+
+             var pw = $("#login_pass").val();
+             console.log(pw);
+
+             $.post("/backend", {type: "login", username: un, password: pw})
+                 .done(function (data) {
+                     alert("Data Loaded: " + data);
+                     console.log(data);
+
+                     //  if user is customer redirect to the pizza menu page
+                     if (data === 'customer') {
+                         window.location = "/index#pizza";
+                     }
+                     //  if user is manager redirect to the admin page
+                     else if (data === 'manager') {
+                         window.location = "/index#manager";
+                     }
+                     //  if user is driver redirect to the driver page
+                     else if (data === 'driver') {
+                         window.location = "/index#driver";
+                     }
+                     //  else user has no accounr and must register
+                     else {
+                         window.location = "/index#register";
+                     }
+
+
+                 });
+         });
+
+//---------------------------------------------- user registration function------------------->
+
+         $("#registerButton").click(function () {
+
+             var un = $("#reg_username").val();
+             console.log(un);
+
+             var pass = $("#reg_password").val();
+             console.log(pass);
+
+             var utype = $("#usertype").val();
+             console.log(utype);
+
+             var nm = $("#name").val();
+             console.log(nm);
+
+             var addr = $("#address").val();
+             console.log(addr);
+
+
+             $.post("/backend", {
+                 type: "register",
+                 username: un,
+                 password: pass,
+                 usertype: utype,
+                 name: nm,
+                 address: addr
+             })
+                 .done(function (data) {
+                     alert("register button pressed: " + data);
+                     window.location = "/index#login";
+                     $("#registered-msg").html('You are now registered : ' + data + ' ' + 'please login');
+                 });
+         });
+
+         /******************************* ADD REMOVE ALL SIZES OF PIZZA NO .1 ******************************/
+//-------------------------------add this pizza to cart--------------//
+
+         $("#add-H-SPizza").click(function () {
+             console.log;
+             alert('small pizza added');
+             UpdateCart(1, "Hawaiian Pizza small", 5.00, 1);
+         });
+         // end add small pizza
+
+         //----------------remove pizza from cart------------------//
+
+         $("#remove-H-SPizza").click(function () {
+             alert('small pizza removed');
+             RemoveProduct("Hawaiian Pizza small");
+         });
+
+         // end remove small pizza
+
+         //-------------------------------add this pizza to cart--------------//
+         $("#add-H-MPizza").click(function () {
+             alert('medium pizza added');
+             UpdateCart(2, "Hawaiian Pizza medium", 10.00, 1);
+
+         }); //end add medium pizza
+
+         $("#remove-H-MPizza").click(function () {
+             alert('medium pizza removed');
+             RemoveProduct("Hawaiian Pizza medium");
+         });
+         // end remove medium pizza
+
+         $("#add-H-LPizza").click(function () {
+             alert('Large pizza added');
+             UpdateCart(3, "Hawaiian Pizza large", 11, 1);
+
+         }); //end add medium pizza
+
+         $("#remove-H-LPizza").click(function () {
+             alert('large pizza removed');
+             RemoveProduct("Hawaiian Pizza large");
+
+         });
+         /******************************* ADD REMOVE ALL SIZES OF PIZZA NO .2 ******************************/
+
+
+         /-------------------------------add this pizza to cart--------------/ /
+
+         $("#add-N-SPizza").click(function () {
+             console.log;
+             alert('small pizza added');
+             UpdateCart(4, "New York Pizza small", 5, 1);
+         });
+         // end add small pizza
+
+         //----------------remove pizza from cart------------------//
+
+         $("#remove-N-SPizza").click(function () {
+             alert('small pizza removed');
+             RemoveProduct("New York Pizza small");
+         });
+
+         // end remove small pizza
+
+         //-------------------------------add this pizza to cart--------------//
+         $("#add-N-MPizza").click(function () {
+             alert('medium pizza added');
+             UpdateCart(5, "New York Pizza medium", 10, 1);
+
+         }); //end add medium pizza
+
+         $("#remove-N-MPizza").click(function () {
+             alert('medium pizza removed');
+             RemoveProduct("New York Pizza medium");
+         });
+         // end remove medium pizza
+
+         $("#add-N-LPizza").click(function () {
+             alert('Large pizza added');
+             UpdateCart(6, "New York Pizza large", 11, 1);
+
+         }); //end add medium pizza
+
+         $("#remove-N-LPizza").click(function () {
+             alert('large pizza removed');
+             RemoveProduct("New York Pizza large");
+
+         });
+         /******************************* ADD REMOVE ALL SIZES OF PIZZA NO .3 ******************************/
+
+
+         /-------------------------------add this pizza to cart--------------/ /
+
+         $("#add-HS-SPizza").click(function () {
+             console.log;
+             alert('small pizza added');
+             UpdateCart(7, "House Special Pizza small", 5, 1);
+         });
+         // end add small pizza
+
+         //----------------remove pizza from cart------------------//
+
+         $("#remove-HS-SPizza").click(function () {
+             alert('small pizza removed');
+             RemoveProduct("House Special Pizza small");
+         });
+
+         // end remove small pizza
+
+         //-------------------------------add this pizza to cart--------------//
+         $("#add-HS-MPizza").click(function () {
+             alert('medium pizza added');
+             UpdateCart(8, "House Special Pizza medium", 10, 1);
+
+         }); //end add medium pizza
+
+         $("#remove-HS-MPizza").click(function () {
+             alert('medium pizza removed');
+             RemoveProduct("House Special Pizza medium");
+         });
+         // end remove medium pizza
+
+         $("#add-HS-LPizza").click(function () {
+             alert('Large pizza added');
+             UpdateCart(9, "House Special Pizza large", 11, 1);
+
+         }); //end add medium pizza
+
+         $("#remove-HS-LPizza").click(function () {
+             alert('large pizza removed');
+             RemoveProduct("House Special Pizza large");
+         });
+         // end remove large pizza
+
+
+         /******************************* ADD REMOVE ALL SIZES OF PIZZA NO .4 ******************************/
+
+
+         /-------------------------------add this pizza to cart--------------/ /
+
+         $("#add-C-SPizza").click(function () {
+             console.log;
+             alert('small pizza added');
+             UpdateCart(10, "Custom Special Pizza small", 5, 1);
+         });
+         // end add small pizza
+
+         //----------------remove pizza from cart------------------//
+
+         $("#remove-C-SPizza").click(function () {
+             alert('small pizza removed');
+             RemoveProduct("Custom Special Pizza small");
+         });
+
+         // end remove small pizza
+
+         //-------------------------------add this pizza to cart--------------//
+         $("#add-C-MPizza").click(function () {
+             alert('medium pizza added');
+             UpdateCart(11, "Custom Special Pizza medium", 10, 1);
+
+         }); //end add medium pizza
+
+         $("#remove-C-MPizza").click(function () {
+             alert('medium pizza removed');
+             RemoveProduct("Custom Special Pizza medium");
+         });
+         // end remove medium pizza
+
+         $("#add-C-LPizza").click(function () {
+             alert('Large pizza added');
+             UpdateCart(12, "Custom Special Pizza large", 11, 1);
+
+         }); //end add medium pizza
+
+         $("#remove-C-LPizza").click(function () {
+             alert('large pizza removed');
+             RemoveProduct("Custom Special Pizza large");
+         });
+         // end remove large pizza
+
+
+         /******************************* END OF................................ ADD REMOVE ALL SIZES OF PIZZA NO .1 ******************************/
+
+
+         /******************************* ADD REMOVE ALL TOPPING DISHES  ******************************/
+//-------------------------------add this topping to cart--------------//
+
+         $("#no-topping").click(function () {
+             console.log;
+             alert('no topping');
+             UpdateCart(13, "no topping", 0, 1);
+         });
+         // end no topping
+
+         $("#ham-topping").click(function () {
+             console.log;
+             alert('ham topping in cart');
+             UpdateCart(14, "ham topping", 1, 1);
+         });
+
+         // end ham topping
+
+         $("#no-ham-topping").click(function () {
+             alert('ham topping removed');
+             RemoveProduct("ham topping");
+         });
+         // end remove hand topping
+
+         $("#pineapple-topping").click(function () {
+             console.log;
+             alert('pineapple topping in cart');
+             UpdateCart(15, "pineapple topping", 1, 1);
+         });
+
+         // end pineapple topping
+
+         $("#no-pineapple-topping").click(function () {
+             alert('pineapple topping removed');
+             RemoveProduct("pineapple topping");
+         });
+         // end remove pineapple topping
+
+         $("#mushroom-topping").click(function () {
+             console.log;
+             alert('mushroom topping in cart');
+             UpdateCart(16, "mushroom topping", 1, 1);
+         });
+
+         // end mushroom topping
+
+         $("#no-mushroom-topping").click(function () {
+             alert('mushroom topping removed');
+             RemoveProduct("mushroom topping");
+         });
+         // end remove mushroom topping
+
+         $("#cheese-topping").click(function () {
+             console.log;
+             alert('cheese topping in cart');
+             UpdateCart(17, "cheese topping", 1, 1);
+         });
+
+         // end cheese topping
+
+         $("#no-cheese-topping").click(function () {
+             alert('cheese topping removed');
+             RemoveProduct("cheese topping");
+         });
+         // end remove cheese topping
+
+
+         //------------------------------- end topping menu functions-------------------//
+
+         //------------------------------------start of sides menu function --------------------------//
+
+         $("#wedges").click(function () {
+             console.log;
+             alert('wedges in cart');
+             UpdateCart(18, "wedges", 5, 1);
+         });
+
+         // end wedges
+
+         $("#no-wedges").click(function () {
+             alert('wedges removed');
+             RemoveProduct("wedges");
+         });
+         // end remove wedges
+
+         $("#garlic-bread").click(function () {
+             console.log;
+             alert('garlic bread in cart');
+             UpdateCart(19, "garlic bread", 5, 1);
+         });
+
+         // end bread
+
+         $("#no-garlic-bread").click(function () {
+             alert('garlic bread removed');
+             RemoveProduct("garlic bread");
+         });
+         // end remove bread
+
+         //---------------------------end of side dish menu function--------------->
+
+
+         //------------------------------------start of drinks menu function --------------------------//
+
+         $("#water").click(function () {
+             console.log;
+             alert('water in cart');
+             UpdateCart(20, "water", 1, 1);
+         });
+
+         // end water
+
+         $("#no-water").click(function () {
+             alert('water removed');
+             RemoveProduct("water");
+         });
+         // end remove water
+
+         $("#orange").click(function () {
+             console.log;
+             alert('orange in cart');
+             UpdateCart(20, "orange", 1, 1);
+         });
+
+         // end orange
+
+         $("#no-orange").click(function () {
+             alert('orange removed');
+             RemoveProduct("orange");
+         });
+         // end remove orange
+
+         //---------------------------end of side drinks menu function--------------->
+
+
+         //============================= create the cart  =======================================//
+         cart = [];  // create cart array
+
+
+         // add a product to the cart
+
+         function UpdateCart(item, name, price, qty) {
+
+             for (var i in cart) {   // if the name of a product ia already in the cart, increase the value of the quantity by the new product quantity
+                 if (cart[i].name === name) {
+                     cart[i].qty += qty;
+                     DisplayCart();
+                     return;
+                 }
+             }
+             var product = new Product(item, name, price, qty);   // create new object if not in cart
+             cart.push(product);
+             DisplayCart();
+
+         }
+
+         // remove a product from the cart
+
+         function RemoveProduct(name) {
+             for (var i in cart) {
+                 if (cart[i].name === name) {
+                     cart[i].qty--;
+
+
+                     if (cart[i].qty === 0) // check object qty is not negative
+                     {
+                         cart.splice(i, 1);  // remove the object from the cart
+                     }
+                     DisplayCart();
+                     break;
+
+                 }
+             }
+         }
+
+         //   calculate the total products in the cart
+
+         function countProductinCart() {
+             var totalProduct = 0;
+
+             for (var i in cart) {
+                 totalProduct += cart[i].qty;
+             }
+             return totalProduct;
+
+
+         }
+
+         function DisplayCart() {
+
+
+             var cartArray = listCart();
+             var output = '';
+
+
+             for (var i in cartArray) {
+                 output += "<div>" +  cartArray[i].item + " ; "
+                     + 'Product :   ' + cartArray[i].name + " ; "
+                     + ' Price :  ' + cartArray[i].price + "  ; "
+                     + 'Quantity : ' + cartArray[i].qty + " ; " +
+                     "</div>"
+
+
+             }
+
+
+                 $("#cart-list").html(output);
+                 $("#cost-Total-pizza").html(totalCost());
+                 $("#quantity-pizza").html(countTheItems());
+                 $("#topping-list").html(output);
+                 $("#cost-Total-topping").html(totalCost());
+                 $("#quantity-topping").html(countTheItems());
+                 $("#sides-list").html(output);
+                 $("#cost-Total-sides").html(totalCost());
+                 $("#quantity-sides").html(countTheItems());
+                 $("#drinks-list").html(output);
+                 $("#cost-Total-drink").html(totalCost());
+                 $("#quantity-drink").html(countTheItems());
+                 $("#Check-out").html(output);
+                 $("#checkout-cost").html(totalCost());
+                 $("#checkout-quantity").html(countTheItems());
+             }
+
+
+
+         function listCart() {
+             //return cart;
+             var cartCopy = [];
+             for (var i in cart) {
+                 var item = cart[i];
+                 var itemCopy = {};
+                 for (var p in item) {
+                     itemCopy[p] = item[p];
+                 }
+                 cartCopy.push(itemCopy);
+             }
+             return cartCopy;
+         }
+
+         // get the total quanity of items in the cart //
+         function countTheItems() {
+             var totalquantity = 0;
+             for (var i in cart) {
+                 totalquantity += cart[i].qty;
+             }
+             console.log(totalquantity);
+             return totalquantity;
+         }
+
+         // get the total cost of the items in the cart
+         function totalCost() {
+             var costTotal = 0;
+             for (var i in cart) {
+                 costTotal += cart[i].price * cart[i].qty;
+             }
+             console.log(costTotal);
+             return costTotal;
+         }
+
+
+
+</script>
+
+
+
+
+</body>
+</html>

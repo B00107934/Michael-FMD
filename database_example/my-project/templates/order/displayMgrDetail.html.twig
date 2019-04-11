@@ -1,0 +1,73 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Manager Order Detail{% endblock %}
+
+{% block body %}
+
+<style>
+
+    #request {font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; }
+	#request { border-collapse:collapse;}
+	#request th, td { border: 1px solid #69899F; border-bottom : 1px solid #ddd; width:250px; text-align:left; align:left;}
+	#request th {border: 2px solid #69899F;color: #fff;padding:5px; background-color:#4F6677;}
+	#request td {border: 1px dotted black;color: #002F5E;padding:15px;width:100px;background-color:#D6DEE4;}
+	#request tr:nth-child(even){background-color: #f2f2f2;}
+	
+	a:link, a:visited { background-color: #f44336; color: white; padding: 14px 25px;text-align: center;text-decoration: none;display: inline-block;}
+
+	a:hover, a:active { background-color: light blue;}
+	
+	header h1::first-letter {font-family:"Lucida Console",cursive;font-size:5em;font-style: italic; text-align: center;}
+	h1 {font-weight:normal;font-size:2em;color:blue; text-align: center;}
+	
+	h2 {font-family: Times, serif; font-style: italic; text-align: center; color:purple;}
+
+
+</style>
+
+<h1>Special Pizza House</h1>
+
+<h2>Manager - Orders </h2>
+
+{% if mgrlist is not empty %}
+<table id = "request">
+  <thead>
+    <tr>
+	<th>Order ID</th>
+      <th>Total Price</th>
+      <th>Status</th>
+      <th>Created</th>
+	  <th>Customer ID</th>
+	   <th>Action D</th>
+	   <th>Action R</th>
+	    <th>Action V</th>  
+    </tr>
+  </thead>
+  <tbody>
+  
+  {% for mgrlist in mgrlist %}
+  <tr>
+    <td>{{ mgrlist.Id }}</td>
+    <td>{{ mgrlist.TotalPrice }}</td>
+    <td>{{ mgrlist.Status}}</td>
+    <td>{{ mgrlist.Created|date('Y-m-d') }}</td>                              
+	<td>{{ mgrlist.User }}</td>
+
+    <td><a href="/mgr/delete/{{ mgrlist.Id }}">Delete a purchase order</a></td>
+	<td><a href="#{{ mgrlist.Id }}">Revenue</a></td>
+  </tr>
+  {% else %}
+		<tr>
+		<td> No orders located</td>
+		</tr>
+	{% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p>No order found.</p>
+{% endif %}
+
+<br/>
+
+{% endblock %}

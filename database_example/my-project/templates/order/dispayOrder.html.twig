@@ -1,0 +1,74 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Display Orders{% endblock %}
+
+{% block body %}
+
+<style>
+
+    #request {font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; }
+	#request { border-collapse:collapse;}
+	#request th, td { border: 1px solid #69899F; border-bottom : 1px solid #ddd; width:250px; text-align:left; align:left;}
+	#request th {border: 2px solid #69899F;color: #fff;padding:5px; background-color:#4F6677;}
+	#request td {border: 1px dotted black;color: #002F5E;padding:15px;width:100px;background-color:#D6DEE4;}
+	#request tr:nth-child(even){background-color: #f2f2f2;}
+	
+	a:link, a:visited { background-color: #f44336; color: white; padding: 14px 25px;text-align: center;text-decoration: none;display: inline-block;}
+
+	a:hover, a:active { background-color: light blue;}
+	
+	header h1::first-letter {font-family:"Lucida Console",cursive;font-size:5em;font-style: italic; text-align: center;}
+	h1 {font-weight:normal;font-size:2em;color:blue; text-align: center;}
+	
+	h2 {font-family: Times, serif; font-style: italic; text-align: center; color:purple;}
+
+
+</style>
+
+<h1>Special Pizza House</h1>
+
+<h2>Order List</h2>
+
+{% if driverlist is not empty %}
+<table id = "request">
+  <thead>
+    <tr>
+	<th>Order ID</th>
+      <th>Total Price</th>
+      <th>Status</th>
+      <th>Created</th>
+	  <th>Customer ID</th>
+	   <th>Action U</th>
+	   <th>Action C</th>
+	     
+    </tr>
+  </thead>
+  <tbody>
+ 
+  {% for driverlist in driverlist %}
+  <tr>
+    <td>{{ driverlist.Id }}</td>
+    <td>{{ driverlist.TotalPrice }}</td>
+    <td>{{ driverlist.Status}}</td>
+    <td>{{ driverlist.Created|date('Y-m-d') }}</td>                              
+	<td>{{ driverlist.User }}</td>
+
+    <td><a href="/driver/update/{{ driverlist.Id }}">Update Status</a></td>
+	<td><a href="/driver/address/{{ driverlist.User }}">View Customer Address</a></td>
+	<td><a href="/driver/orderdetail/{{ driverlist.Id }}">View Order Detail</a></td>
+  </tr>
+  {% else %}
+		<tr>
+		<td> No orders located</td>
+		</tr>
+	{% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p>No order found.</p>
+{% endif %}
+
+<br/>
+
+{% endblock %}

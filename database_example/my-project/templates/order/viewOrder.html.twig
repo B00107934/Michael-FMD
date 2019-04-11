@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Orders{% endblock %}
+
+{% block body %}
+
+<style>
+
+    #request {font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; margin-left: auto;margin-right: auto;text-align: left; }
+	#request { border-collapse:collapse;}
+	#request th, td { border: 1px solid #69899F; border-bottom : 1px solid #ddd; width:250px; text-align:left; align:left;}
+	#request th{border: 2px solid #69899F;color: #fff;padding:5px; background-color:#4F6677;}
+	#request td{border: 1px dotted black;color: #002F5E;padding:15px;width:100px;background-color:#D6DEE4;}
+	
+	a:link, a:visited { background-color: #f44336; color: white; padding: 14px 25px;text-align: center;text-decoration: none;display: inline-block;}
+	a:hover, a:active { background-color: #69899F;}
+	
+	header h1::first-letter {font-family:"Lucida Console",cursive;font-size:5em;font-style: italic; text-align: center;}
+	h1 {font-weight:normal;font-size:2em;color:blue; text-align: center;}
+	
+	h2 {font-family: Times, serif; font-style: italic; text-align: center;color:purple;}
+
+
+</style>
+
+<h1>Special Pizza House</h1>
+
+<h2>Update Asset</h2>
+
+<table id = "request">
+  <tbody>
+    <tr>
+      <th>Status</th>
+      <td>{{ driverlist.Status }}</td>
+    </tr>
+	
+
+  </tbody>
+</table>
+
+<br/>
+
+
+<a href="/driver/show">View All</a> 
+<a href="/driver/update/{{ driverlist.Id }}">Update Status</a>
+
+
+
+{% endblock %}

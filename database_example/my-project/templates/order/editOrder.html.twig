@@ -1,0 +1,52 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}New Orders{% endblock %}
+
+
+{% block body %}
+
+<style>
+    
+   .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    #request {font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; margin-left: auto;margin-right: auto;text-align: left;}
+	#request { border-collapse:collapse;}
+	#request th, td { border: 1px solid #69899F; border-bottom : 1px solid #ddd; width:250px; text-align:left; align:left;}
+	#request th{border: 2px solid #69899F;color: #fff;padding:5px; background-color:#4F6677;}
+	#request td{border: 1px dotted black;color: #002F5E;padding:15px;width:100px;background-color:#D6DEE4;}
+	
+	/*  code to style at the header at top of web page */
+
+	header h1::first-letter {font-family:"Lucida Console",cursive;font-size:5em;font-style: italic; text-align: center;}
+	h1 {font-weight:normal;font-size:2em;color:blue; text-align: center;}
+	
+	h2 {font-family: Times, serif; font-style: italic; text-align: center;color:purple;}
+
+	
+
+</style>
+
+<h1>Special Pizza House</h1>
+
+<h2>Update Order</h2>
+
+{{ form_start(form) }}
+
+<table id = "request">
+  <tbody>
+    <tr>
+      <th>Status</th>
+      <td>{{ form_widget(form.status) }}</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>{{ form_widget(form.save) }}</td>
+    </tr>
+  </tbody>
+</table>
+
+{{ form_end(form) }}
+
+
+
+{% endblock %}
