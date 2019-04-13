@@ -17,7 +17,7 @@ class PurOrder
     public $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=20)
 
      */
     private $total_price;
@@ -42,12 +42,12 @@ class PurOrder
         return $this->id;
     }
 
-    public function getTotalPrice(): ?integer
+    public function getTotalPrice(): ?string
     {
         return $this->total_price;
     }
 
-    public function setTotalPrice(integer $total_price): self
+    public function setTotalPrice(string $total_price): self
     {
         $this->total_price = $total_price;
 

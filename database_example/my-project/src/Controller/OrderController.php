@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\OrderItem;
 use App\Entity\PurOrder;
 use App\Entity\Login;
-use App\Repository\OrderRepository;
+//use App\Repository\OrderRepository;//
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,15 +55,15 @@ class OrderController extends AbstractController
                 ->getQuery ();
             $turnovers = $query->getResult ();
 
-           $jsonTurnover = array();
-           $idp = 0;
-           foreach($turnovers as $turnover) {
-               $temp = array('revenue' => $turnover);
-               $jsonTurnover[$idp++] = $temp;
+            $jsonTurnover = array();
+            $idp = 0;
+            foreach($turnovers as $turnover) {
+                $temp = array('revenue' => $turnover);
+                $jsonTurnover[$idp++] = $temp;
 
-           }
+            }
 
-           return new JsonResponse( $jsonTurnover );//
+            return new JsonResponse( $jsonTurnover );//
 
         }
 
@@ -72,13 +72,13 @@ class OrderController extends AbstractController
 
         if ($type == 'find-addr') {
 
-                $cust_id = $session->get ( 'userId' );
-                $repo = $this->getDoctrine ()->getRepository ( Login::class ); // the type of the entity
-                $person = $repo->findOneBy ( ['id' => $cust_id,] );
-                $cust_shipping = $person->getAddress ();
+            $cust_id = $session->get ( 'userId' );
+            $repo = $this->getDoctrine ()->getRepository ( Login::class ); // the type of the entity
+            $person = $repo->findOneBy ( ['id' => $cust_id,] );
+            $cust_shipping = $person->getAddress ();
 
-                return new Response( $cust_shipping );
-          }
+            return new Response( $cust_shipping );
+        }
 
         //   get the cart details and write to database table cartorder, the read the table and render to twig template display cart //
         $request = Request::createFromGlobals (); // the envelope, and were looking inside it.
@@ -87,63 +87,73 @@ class OrderController extends AbstractController
 
 
 
-           // decode the JSON post from jquery //
-           $orderItems = json_decode ($request->request->get ('orderItems' , 'none'));
-           $total_cost = ($request->request->get ('totalcost' , 'none'));
-
-            // create a date format //
-           $date = date('Y-m-d H:i:s');
-           $datetime = new \DateTime();
+        // decode the JSON post from jquery //
+        $orderItems = json_decode ($request->request->get ('orderItems' , 'none'));
+        $total_cost = ($request->request->get ('totalcost' , 'none'));
 
 
-            $sess_name = $session->get ( 'userId' );
+        /*$total_cost_num = (int)$total_cost;
+        var_dump($total_cost_num);*/
+
+        /*echo'<pre>';
+        print_r($total_cost_num);
+        echo'</pre>';
+        exit(); */
+
+        // create a date format //
+        $date = date('Y-m-d H:i:s');
+        $datetime = new \DateTime();
 
 
-            //$po = $session->get('po');//
+        $sess_name = $session->get ( 'userId' );
 
-            $repo = $this->getDoctrine ()->getRepository ( Login::class ); // the type of the entity
-            $customer = $repo->findOneBy ( ['id' => $sess_name,] );
-            $customer_id = $customer->getId();
 
-            //Write the purchase order to database and write the user object (the person ordering) to the User field $purorder->setUser($person);//
-            $purorder = new PurOrder();
-            $purorder->setTotalPrice ( $total_cost );
-            $purorder->setStatus ( 'pending' );
-            $purorder->setCreated ( $datetime );
-            $purorder->setUser ( $customer_id );
+        //$po = $session->get('po');//
 
-            $session->set('po' , $purorder);
+        $repo = $this->getDoctrine ()->getRepository ( Login::class ); // the type of the entity
+        $customer = $repo->findOneBy ( ['id' => $sess_name,] );
+        $customer_id = $customer->getId();
 
+        //Write the purchase order to database and write the user object (the person ordering) to the User field $purorder->setUser($person);//
+        $purorder = new PurOrder();
+        //$purorder->setTotalPrice ( $total_cost_num );//
+        $purorder->setTotalPrice ( $total_cost );
+        $purorder->setStatus ( 'pending' );
+        $purorder->setCreated ( $datetime );
+        $purorder->setUser ( $customer_id );
+
+        $session->set('po' , $purorder);
+
+        $entityManager = $this->getDoctrine ()->getManager ();
+        // write the new purchase order record  to database //
+        $entityManager->persist ( $purorder );
+        $entityManager->flush ();
+
+
+        // write the purchase order items to order items table and write the purchase order object to the order_id field
+        // extract the cart data from the JSON
+
+        foreach($orderItems as $item) {
+            $repo = $this->getDoctrine ()->getRepository ( OrderItem::class ); // the type of the entity
+
+            $po_Id = $purorder->getId();
+
+            $orderitem = new OrderItem();
+            $orderitem->setDescription ($item-> name );
+            $orderitem->setPrice ( $item-> price );
+            $orderitem->setQuantity ($item-> qty );
+            $orderitem->setOrd ( $po_Id );
             $entityManager = $this->getDoctrine ()->getManager ();
-             // write the new purchase order record  to database //
-             $entityManager->persist ( $purorder );
-             $entityManager->flush ();
+            // write the new order record  to database //
+            $entityManager->persist ( $orderitem );
+            $entityManager->flush ();
 
-
-            // write the purchase order items to order items table and write the purchase order object to the order_id field
-            // extract the cart data from the JSON
-
-            foreach($orderItems as $item) {
-                $repo = $this->getDoctrine ()->getRepository ( OrderItem::class ); // the type of the entity
-
-                $po_Id = $purorder->getId();
-
-                $orderitem = new OrderItem();
-                $orderitem->setDescription ($item-> name );
-                $orderitem->setPrice ( $item-> price );
-                $orderitem->setQuantity ($item-> qty );
-                $orderitem->setOrd ( $po_Id );
-                $entityManager = $this->getDoctrine ()->getManager ();
-                // write the new order record  to database //
-                $entityManager->persist ( $orderitem );
-                $entityManager->flush ();
-
-            }
+        }
 
         return new Response( $po_Id);//
 
 
-        }
+    }
 
 
 
@@ -168,7 +178,7 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/history", name="previous-order") methods={"GET","POST"}
      */
-   public function prevOrder()
+    public function prevOrder()
     {
         $session = new Session();
         $prevOrder = $session->get( 'userId' );
@@ -300,8 +310,8 @@ class OrderController extends AbstractController
             ->add ( 'id', TextType::class )
             ->add ( 'total_price', TextType::class )
             ->add ( 'status', TextType::class  )
-           // ->add ( 'created', TextType::class )//
-             ->add ( 'user', TextType::class )
+            // ->add ( 'created', TextType::class )//
+            ->add ( 'user', TextType::class )
             ->add ( 'save', SubmitType::class, array('label' => 'Save') )
             ->getForm ();
 
@@ -336,9 +346,9 @@ class OrderController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Login::class);
         $locations = $repo->findBy ( ['id' => $user] );
 
-       // echo'<pre>';
-       // print_r($locations);
-       // echo'</pre>';
+        // echo'<pre>';
+        // print_r($locations);
+        // echo'</pre>';
         //exit();
 
 
@@ -354,7 +364,7 @@ class OrderController extends AbstractController
         );
 
     }
-  ///////////////////////////////////////////////////////// manager form////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////// manager form////////////////////////////////////////////////////////////////////
 
 
     // create a form for the manager //
@@ -473,42 +483,42 @@ class OrderController extends AbstractController
     /**
      * @Route("/mgr/update/{id}", name="mgr-update-order") methods={"GET","POST"}))
      */
-  /*  public function updateMgrAction(Request $request, $id) {
+    /*  public function updateMgrAction(Request $request, $id) {
 
-        $em = $this->getDoctrine()->getManager();
-        $mgrlist = $em->getRepository(Purorder:: class)->find($id);
+          $em = $this->getDoctrine()->getManager();
+          $mgrlist = $em->getRepository(Purorder:: class)->find($id);
 
-        if (!$mgrlist) {
-            throw $this->createNotFoundException(
-                'There are no orders with the following id: ' . $id
-            );
-        }
+          if (!$mgrlist) {
+              throw $this->createNotFoundException(
+                  'There are no orders with the following id: ' . $id
+              );
+          }
 
-        $form = $this->createFormBuilder($mgrlist)
-            ->add ( 'id', TextType::class )
-            ->add ( 'total_price', TextType::class )
-            ->add ( 'status', TextType::class  )
-            // ->add ( 'created', TextType::class )//
-            ->add ( 'user', TextType::class )
-            ->add ( 'save', SubmitType::class, array('label' => 'Save') )
-            ->getForm ();
+          $form = $this->createFormBuilder($mgrlist)
+              ->add ( 'id', TextType::class )
+              ->add ( 'total_price', TextType::class )
+              ->add ( 'status', TextType::class  )
+              // ->add ( 'created', TextType::class )//
+              ->add ( 'user', TextType::class )
+              ->add ( 'save', SubmitType::class, array('label' => 'Save') )
+              ->getForm ();
 
-        $form->handleRequest($request);
+          $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+          if ($form->isSubmitted()) {
 
-            $mgrlist = $form->getData();
-            $em->flush();
+              $mgrlist = $form->getData();
+              $em->flush();
 
-            return $this->redirect ( '/mgr/viewPO/'. $id );
+              return $this->redirect ( '/mgr/viewPO/'. $id );
 
-        }
+          }
 
-        return $this->render(
-            'order/editOrdermgr.html.twig',
-            array('form' => $form->createView())
-        );
+          return $this->render(
+              'order/editOrdermgr.html.twig',
+              array('form' => $form->createView())
+          );
 
-    } */
+      } */
 
 }  // class end

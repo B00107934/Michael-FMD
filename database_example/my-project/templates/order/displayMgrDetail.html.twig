@@ -40,8 +40,6 @@
       <th>Created</th>
 	  <th>Customer ID</th>
 	   <th>Action D</th>
-	   <th>Action R</th>
-	    <th>Action V</th>  
     </tr>
   </thead>
   <tbody>
@@ -55,7 +53,7 @@
 	<td>{{ mgrlist.User }}</td>
 
     <td><a href="/mgr/delete/{{ mgrlist.Id }}">Delete a purchase order</a></td>
-	<td><a href="#{{ mgrlist.Id }}">Revenue</a></td>
+
   </tr>
   {% else %}
 		<tr>
@@ -70,4 +68,7 @@
 
 <br/>
 
+    <a href="/index#manager">Back to menu</a>
+
 {% endblock %}
+

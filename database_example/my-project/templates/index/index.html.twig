@@ -185,9 +185,9 @@
 			</button></a>
 
 
-		<a href="{{ path('order') }}">
+		<!--a href="{{ path('order') }}">
 			<button type="submit" data-theme="b" name="uploadnewAssets" id="UpLoadNewAssetButton" >Check out test to twig</span>
-			</button>
+			</button-->
 		</a>
 			<a class="ui-button ui-widget ui-corner-all" href="#topping">Topping Menu</a>
 
@@ -715,12 +715,15 @@
      $( "#order").click(function(){
 
          var tCost =  totalCost();
+         var tC = parseInt(tCost);
+
          var cartJson = JSON.stringify(listCart());
          console.log('json' + cartJson);
+         console.log('cost' + tC);
 
          // use jquery post to send the items in the cart to the /order page
 
-         $.post("/order", {orderItems: cartJson, totalcost : tCost })
+         $.post("/order", {orderItems: cartJson, totalcost : tC })
              .done(function (data)
 			 {
                  alert("order ID " + data);
