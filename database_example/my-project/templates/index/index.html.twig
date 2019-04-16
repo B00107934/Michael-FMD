@@ -43,6 +43,19 @@
 
 	</script>
 
+
+<style>
+
+	a:link, a:visited { background-color: #f44336; color: white; padding: 14px 25px;text-align: center;text-decoration: none;display: inline-block;}
+
+	a:hover, a:active { background-color: light blue;}
+
+	header h1::first-letter {font-family:"Lucida Console",cursive;font-size:5em;font-style: italic; text-align: center;}
+	h1 {font-weight:normal;font-size:2em;color:blue; text-align: center;}
+
+	h2 {font-family: Times, serif; font-style: italic; text-align: center; color:purple;}
+</style>
+
 </head>
 
 
@@ -90,18 +103,25 @@
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content">
-		<h2>Menu</h2>
+		<h2>Manager's Menu</h2>
 
-		<a class="ui-button ui-widget ui-corner-all" href="{{ path('show-mgr-order') }}">Manager menu</a>
+		<a class="ui-button ui-widget ui-corner-all" href="{{ path('show-mgr-order') }}">View the Orders on the System</a>
 
+		<br>
+		<br>
+        <h2>Revenue Menu</h2>
+		<br>
+		<b>Enter the dates to search for revenue. Use the format YYYY-MM-DD HH:MM:SS. Example 2019-04-07 00:00:00</b>
+		<br>
+		Enter Date & Time: (from) <input type="text" name="datef" id="datef" placeholder="Use the format YYYY-MM-DD HH:MM:SS">
+		Enter Date & Time: (to)  <input type="text" name="datet" id="datet" >
+		<button class="ui-btn" id="date-sub">Submit</button>
 
 
 		<br>
+		<div id = "revenue_msg">
 
-		<p>Enter the dates to search for revenue. Use the format YYYY-MM-DD HH:MM:SS. Example 2019-04-07 00:00:00</p>
-		Date: (from) <input type="text" name="datef" id="datef" placeholder="Use the format YYYY-MM-DD HH:MM:SS">
-		Date: (to)  <input type="text" name="datet" id="datet" >
-		<button class="ui-btn" id="date-sub">Submit</button>
+		</div>
 
 
 		<br>
@@ -133,18 +153,19 @@
 	<div role="main" class="ui-content">
 		<h2>Driver's Menu</h2>
 
-		<a class="ui-button ui-widget ui-corner-all" href="{{ path('showall-order') }}">Show orders</a>
+		<a class="ui-button ui-widget ui-corner-all" href="{{ path('showall-order') }}">See current list of orders</a>
 
 	<br>
 		<br>
 		<br>
 
-			<b>Enter the name of your location to get weather forecast:- </b>
-<!--form method="GET" action="get.php"-->
-		Location <input type="text" name="q" id="q" required>
+			<b>Enter the name of your location to get current weather conditions  :- </b>
+		<br>
+		    <b>Use the format city,country code e.g. dublin,IE</b>
+		<br>
+		<br>
+		Enter Location <input type="text" name="q" id="q" required>
 		<button class="ui-btn" id="getweather">Submit</button>
-</form>
-
 
 		<br>
 		<br>
@@ -177,18 +198,20 @@
 
 	<div role="main" class="ui-content">
 
-			<a class="ui-button ui-widget ui-corner-all" href="#checkout">Checkout</a>
-
-
 		<a href="{{ path('previous-order') }}">
-			<button type="submit" data-theme="b" name="orderhistory" id="orderhistory" >Order History</span>
+			<button type="submit" data-theme="b" name="orderhistory" id="orderhistory" >My Order History</span>
 			</button></a>
+
+		<br>
+		<br>
+		<br>
+			<a class="ui-button ui-widget ui-corner-all" href="#checkout">Checkout</a>
 
 
 		<!--a href="{{ path('order') }}">
 			<button type="submit" data-theme="b" name="uploadnewAssets" id="UpLoadNewAssetButton" >Check out test to twig</span>
-			</button-->
-		</a>
+			</button>
+		</a-->
 			<a class="ui-button ui-widget ui-corner-all" href="#topping">Topping Menu</a>
 
 		<h2>Choose your Pizzas</h2>
@@ -630,16 +653,22 @@
         var dt = $("#datet").val();
         console.log(dt);
 
-        $.post("/order", {type: "revenue", datef: df, datet: dt})
-            .done(function (data) {
-                alert(data);
-                console.log(data);
-				//rev = data['revenue']['turnover'];//
-                rev = data[0]['revenue']['turnover'];
-                $("#revenue").html( rev );
 
-            });
+            $.post("/order", {type: "revenue", datef: df, datet: dt})
+                .done(function (data) {
+                    //alert(data);//
 
+                    if (data) {
+                        rev = data[0]['revenue']['turnover'];
+                        $("#revenue").html(rev);
+                    }
+                    else{
+                        $("#revenue_msg").html('There is no revenue for this period');
+                    }
+
+
+
+                });
     });
 
     //  get user address  ///
@@ -649,25 +678,31 @@
     {
 
         var city = $("#q").val();
-        console.log(city);
-        alert("weather button pressed");
+        if (!city){
+            $("#weather-request").html('please enter a location'); }
+            else {
+            $.getJSON("http://api.openweathermap.org/data/2.5/find?q=" + city + "&units=metric&appid=749a45122c884e59e9da5349d3c9c9c0", function (data) {
 
+                if (data) {
 
-        $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=city&units=metric&appid=749a45122c884e59e9da5349d3c9c9c0" , function( data )
-	{
+                    console.log(data);  //dublin,IE//
+                    var description = data['list'][0]['weather'][0]['description'];
+                    main = data['list'][0]['weather'][0]['main'];
+                    windspeed = data['list'][0]['wind']['speed'];
+                    temp = data['list'][0]['main']['temp'];
 
-        /*console.log(data); */
+                    content = "<div>" + "<b>" + main + " , " + description + " / " + 'windspeed:' + windspeed + " / " + 'temperature :' + temp + "</b>" + "</div>";
 
-        main = data['weather'][0]['main'];
-        description = data['weather'][0]['description'];
-        windspeed = data['wind']['speed'];
-        temp = data['main']['temp'];
+                    $("#weather-request").html(content);
+                    content = '';
+                    city = '';
+                }
+                else {
+                    $("#weather-request").html('no weather for this city');
+                }
 
-        content = "<div>" + "<b>" + 'main:'  +  main + " , " + description + " / " + 'windspeed:' +  windspeed + " / " + 'temperature:' + temp  + "</b>" + "</div>";
-
-        $("#weather-request").html(content);
-    });
-
+            });
+        }
     });
 
 
@@ -766,8 +801,8 @@
 
              $.post("/backend", {type: "login", username: un, password: pw})
                  .done(function (data) {
-                     alert("Data Loaded: " + data);
-                     console.log(data);
+                     //alert("Data Loaded: " + data);//
+                     //console.log(data);//
 
                      //  if user is customer redirect to the pizza menu page
                      if (data === 'customer') {
@@ -819,9 +854,9 @@
                  address: addr
              })
                  .done(function (data) {
-                     alert("register button pressed: " + data);
+                    // alert("register button pressed: " + data);//
                      window.location = "/index#login";
-                     $("#registered-msg").html('You are now registered : ' + data + ' ' + 'please login');
+                     $("#registered-msg").html('You are now registered, ' + data + ' ' + 'please login using your username and password');
                  });
          });
 
@@ -830,7 +865,7 @@
 
          $("#add-H-SPizza").click(function () {
              console.log;
-             alert('small pizza added');
+          //   alert('small pizza added'); //
              UpdateCart(1, "Hawaiian Pizza small", 5.00, 1);
          });
          // end add small pizza
@@ -838,7 +873,7 @@
          //----------------remove pizza from cart------------------//
 
          $("#remove-H-SPizza").click(function () {
-             alert('small pizza removed');
+         //    alert('small pizza removed'); //
              RemoveProduct("Hawaiian Pizza small");
          });
 
@@ -846,36 +881,36 @@
 
          //-------------------------------add this pizza to cart--------------//
          $("#add-H-MPizza").click(function () {
-             alert('medium pizza added');
+        //     alert('medium pizza added'); //
              UpdateCart(2, "Hawaiian Pizza medium", 10.00, 1);
 
          }); //end add medium pizza
 
          $("#remove-H-MPizza").click(function () {
-             alert('medium pizza removed');
+        //     alert('medium pizza removed'); //
              RemoveProduct("Hawaiian Pizza medium");
          });
          // end remove medium pizza
 
          $("#add-H-LPizza").click(function () {
-             alert('Large pizza added');
+        //     alert('Large pizza added'); //
              UpdateCart(3, "Hawaiian Pizza large", 11, 1);
 
          }); //end add medium pizza
 
          $("#remove-H-LPizza").click(function () {
-             alert('large pizza removed');
+          //   alert('large pizza removed'); //
              RemoveProduct("Hawaiian Pizza large");
 
          });
-         /******************************* ADD REMOVE ALL SIZES OF PIZZA NO .2 ******************************/
+         //******************************* ADD REMOVE ALL SIZES OF PIZZA NO .2 ******************************//
 
 
-         /-------------------------------add this pizza to cart--------------/ /
+         //-------------------------------add this pizza to cart--------------//
 
          $("#add-N-SPizza").click(function () {
-             console.log;
-             alert('small pizza added');
+             //console.log;//
+         //    alert('small pizza added'); //
              UpdateCart(4, "New York Pizza small", 5, 1);
          });
          // end add small pizza
@@ -883,7 +918,7 @@
          //----------------remove pizza from cart------------------//
 
          $("#remove-N-SPizza").click(function () {
-             alert('small pizza removed');
+       //      alert('small pizza removed');//
              RemoveProduct("New York Pizza small");
          });
 
@@ -891,36 +926,36 @@
 
          //-------------------------------add this pizza to cart--------------//
          $("#add-N-MPizza").click(function () {
-             alert('medium pizza added');
+         //    alert('medium pizza added'); //
              UpdateCart(5, "New York Pizza medium", 10, 1);
 
          }); //end add medium pizza
 
          $("#remove-N-MPizza").click(function () {
-             alert('medium pizza removed');
+        //     alert('medium pizza removed'); //
              RemoveProduct("New York Pizza medium");
          });
          // end remove medium pizza
 
          $("#add-N-LPizza").click(function () {
-             alert('Large pizza added');
+         //   alert('Large pizza added');//
              UpdateCart(6, "New York Pizza large", 11, 1);
 
          }); //end add medium pizza
 
          $("#remove-N-LPizza").click(function () {
-             alert('large pizza removed');
+          //   alert('large pizza removed'); //
              RemoveProduct("New York Pizza large");
 
          });
-         /******************************* ADD REMOVE ALL SIZES OF PIZZA NO .3 ******************************/
+         //******************************* ADD REMOVE ALL SIZES OF PIZZA NO .3 ******************************//
 
 
-         /-------------------------------add this pizza to cart--------------/ /
+         //-------------------------------add this pizza to cart--------------//
 
          $("#add-HS-SPizza").click(function () {
-             console.log;
-             alert('small pizza added');
+             //console.log;//
+         //    alert('small pizza added'); //
              UpdateCart(7, "House Special Pizza small", 5, 1);
          });
          // end add small pizza
@@ -928,7 +963,7 @@
          //----------------remove pizza from cart------------------//
 
          $("#remove-HS-SPizza").click(function () {
-             alert('small pizza removed');
+       //      alert('small pizza removed'); //
              RemoveProduct("House Special Pizza small");
          });
 
@@ -936,38 +971,37 @@
 
          //-------------------------------add this pizza to cart--------------//
          $("#add-HS-MPizza").click(function () {
-             alert('medium pizza added');
+     //        alert('medium pizza added'); //
              UpdateCart(8, "House Special Pizza medium", 10, 1);
 
          }); //end add medium pizza
 
          $("#remove-HS-MPizza").click(function () {
-             alert('medium pizza removed');
+       //      alert('medium pizza removed'); //
              RemoveProduct("House Special Pizza medium");
          });
          // end remove medium pizza
 
          $("#add-HS-LPizza").click(function () {
-             alert('Large pizza added');
+      //       alert('Large pizza added');//
              UpdateCart(9, "House Special Pizza large", 11, 1);
 
          }); //end add medium pizza
 
          $("#remove-HS-LPizza").click(function () {
-             alert('large pizza removed');
+      //       alert('large pizza removed'); //
              RemoveProduct("House Special Pizza large");
          });
          // end remove large pizza
 
 
-         /******************************* ADD REMOVE ALL SIZES OF PIZZA NO .4 ******************************/
+         //******************************* ADD REMOVE ALL SIZES OF PIZZA NO .4 ******************************/
 
 
-         /-------------------------------add this pizza to cart--------------/ /
+         //-------------------------------add this pizza to cart--------------/ /
 
          $("#add-C-SPizza").click(function () {
-             console.log;
-             alert('small pizza added');
+      //       alert('small pizza added'); //
              UpdateCart(10, "Custom Special Pizza small", 5, 1);
          });
          // end add small pizza
@@ -975,7 +1009,7 @@
          //----------------remove pizza from cart------------------//
 
          $("#remove-C-SPizza").click(function () {
-             alert('small pizza removed');
+       //      alert('small pizza removed');//
              RemoveProduct("Custom Special Pizza small");
          });
 
@@ -983,25 +1017,25 @@
 
          //-------------------------------add this pizza to cart--------------//
          $("#add-C-MPizza").click(function () {
-             alert('medium pizza added');
+      //       alert('medium pizza added');//
              UpdateCart(11, "Custom Special Pizza medium", 10, 1);
 
          }); //end add medium pizza
 
          $("#remove-C-MPizza").click(function () {
-             alert('medium pizza removed');
+         //    alert('medium pizza removed');//
              RemoveProduct("Custom Special Pizza medium");
          });
          // end remove medium pizza
 
          $("#add-C-LPizza").click(function () {
-             alert('Large pizza added');
+       //      alert('Large pizza added');//
              UpdateCart(12, "Custom Special Pizza large", 11, 1);
 
          }); //end add medium pizza
 
          $("#remove-C-LPizza").click(function () {
-             alert('large pizza removed');
+       //      alert('large pizza removed');//
              RemoveProduct("Custom Special Pizza large");
          });
          // end remove large pizza
@@ -1015,63 +1049,63 @@
 
          $("#no-topping").click(function () {
              console.log;
-             alert('no topping');
+    //         alert('no topping');//
              UpdateCart(13, "no topping", 0, 1);
          });
          // end no topping
 
          $("#ham-topping").click(function () {
              console.log;
-             alert('ham topping in cart');
+    //         alert('ham topping in cart');//
              UpdateCart(14, "ham topping", 1, 1);
          });
 
          // end ham topping
 
          $("#no-ham-topping").click(function () {
-             alert('ham topping removed');
+       //      alert('ham topping removed');//
              RemoveProduct("ham topping");
          });
          // end remove hand topping
 
          $("#pineapple-topping").click(function () {
              console.log;
-             alert('pineapple topping in cart');
+       //      alert('pineapple topping in cart'); //
              UpdateCart(15, "pineapple topping", 1, 1);
          });
 
          // end pineapple topping
 
          $("#no-pineapple-topping").click(function () {
-             alert('pineapple topping removed');
+       //      alert('pineapple topping removed'); //
              RemoveProduct("pineapple topping");
          });
          // end remove pineapple topping
 
          $("#mushroom-topping").click(function () {
              console.log;
-             alert('mushroom topping in cart');
+       //      alert('mushroom topping in cart'); //
              UpdateCart(16, "mushroom topping", 1, 1);
          });
 
          // end mushroom topping
 
          $("#no-mushroom-topping").click(function () {
-             alert('mushroom topping removed');
+     //        alert('mushroom topping removed'); //
              RemoveProduct("mushroom topping");
          });
          // end remove mushroom topping
 
          $("#cheese-topping").click(function () {
              console.log;
-             alert('cheese topping in cart');
+       //      alert('cheese topping in cart'); //
              UpdateCart(17, "cheese topping", 1, 1);
          });
 
          // end cheese topping
 
          $("#no-cheese-topping").click(function () {
-             alert('cheese topping removed');
+      //       alert('cheese topping removed');//
              RemoveProduct("cheese topping");
          });
          // end remove cheese topping
@@ -1083,28 +1117,28 @@
 
          $("#wedges").click(function () {
              console.log;
-             alert('wedges in cart');
+      //       alert('wedges in cart');//
              UpdateCart(18, "wedges", 5, 1);
          });
 
          // end wedges
 
          $("#no-wedges").click(function () {
-             alert('wedges removed');
+       //      alert('wedges removed');//
              RemoveProduct("wedges");
          });
          // end remove wedges
 
          $("#garlic-bread").click(function () {
              console.log;
-             alert('garlic bread in cart');
+      //       alert('garlic bread in cart');//
              UpdateCart(19, "garlic bread", 5, 1);
          });
 
          // end bread
 
          $("#no-garlic-bread").click(function () {
-             alert('garlic bread removed');
+        //     alert('garlic bread removed');//
              RemoveProduct("garlic bread");
          });
          // end remove bread
@@ -1116,28 +1150,28 @@
 
          $("#water").click(function () {
              console.log;
-             alert('water in cart');
+        //     alert('water in cart');//
              UpdateCart(20, "water", 1, 1);
          });
 
          // end water
 
          $("#no-water").click(function () {
-             alert('water removed');
+        //     alert('water removed');//
              RemoveProduct("water");
          });
          // end remove water
 
          $("#orange").click(function () {
              console.log;
-             alert('orange in cart');
+       //      alert('orange in cart');//
              UpdateCart(20, "orange", 1, 1);
          });
 
          // end orange
 
          $("#no-orange").click(function () {
-             alert('orange removed');
+        //     alert('orange removed');//
              RemoveProduct("orange");
          });
          // end remove orange

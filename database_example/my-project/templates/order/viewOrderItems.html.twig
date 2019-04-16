@@ -1,7 +1,7 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Display Address of a Customer - Driver Page{% endblock %}
+{% block title %}Display Address{% endblock %}
 
 {% block body %}
 
@@ -28,26 +28,34 @@
 
 <h1>Special Pizza House</h1>
 
-<h2>Customer Address</h2>
+<h2>Order Item Detail</h2>
 
-{% if locations is not empty %}
+{% if driverlist is not empty %}
 <table id = "request">
   <thead>
     <tr>
-      <th>Address</th>       
+	<th>ID</th> 
+      <th>Description</th> 
+     <th>Price</th>       
+      <th>Quantity</th>         
+      <th>Order Number</th>       
     </tr>
+	
   </thead>
   <tbody>
   
-  {% for y in locations %}
+  {% for y in driverlist %}
   <tr>
-    <td>{{ y.Address }}</td>
-  
+  <td>{{ y.Id }}</td>
+    <td>{{ y.Description }}</td>
+	<td>{{ y.Price }}</td>
+    <td>{{ y.Quantity }}</td>
+    <td>{{ y.Ord }}</td>
 
   </tr>
   {% else %}
 		<tr>
-		<td> No address located</td>
+		<td> No contents located</td>
 		</tr>
 	{% endfor %}
   </tbody>
@@ -59,6 +67,6 @@
 
 <br/>
 
-<a href="/driver/show">Back to Driver Page</a>
+<a href="/driver/show">Back to Driver Menu</a>
 
 {% endblock %}

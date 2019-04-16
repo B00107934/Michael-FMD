@@ -35,8 +35,20 @@
 <table id = "request">
   <tbody>
     <tr>
+        <th>ID</th>
+        <td>{{ form_widget(form.id) }}</td>
+    </tr>
+    <tr>
+        <th>Total Price</th>
+        <td>{{ form_widget(form.total_price) }}</td>
+  </tr>
+    <tr>
       <th>Status</th>
       <td>{{ form_widget(form.status) }}</td>
+  </tr>
+    <tr>
+        <th>Customer</th>
+        <td>{{ form_widget(form.user) }}</td>
     </tr>
     <tr>
       <th></th>
@@ -47,6 +59,6 @@
 
 {{ form_end(form) }}
 
-
+    <a href="/driver/show">Back to Driver Menu</a>
 
 {% endblock %}

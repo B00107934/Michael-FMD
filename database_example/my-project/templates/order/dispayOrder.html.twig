@@ -1,7 +1,7 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Display Orders{% endblock %}
+{% block title %}Display Orders to Driver{% endblock %}
 
 {% block body %}
 
@@ -28,7 +28,9 @@
 
 <h1>Special Pizza House</h1>
 
-<h2>Order List</h2>
+<h2>Driver Menu</h2>
+
+    <h3>Current Order List</h3>
 
 {% if driverlist is not empty %}
 <table id = "request">
@@ -39,8 +41,9 @@
       <th>Status</th>
       <th>Created</th>
 	  <th>Customer ID</th>
-	   <th>Action U</th>
+	   <th>Action S</th>
 	   <th>Action C</th>
+        <th>Action V</th>
 	     
     </tr>
   </thead>
@@ -70,5 +73,7 @@
 {% endif %}
 
 <br/>
+
+    <a href="/index#driver">Back to the Driver Menu</a>
 
 {% endblock %}

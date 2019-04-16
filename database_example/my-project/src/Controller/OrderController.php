@@ -68,7 +68,7 @@ class OrderController extends AbstractController
         }
 
 
-
+           // display the address for delivery to the customer after place order button
 
         if ($type == 'find-addr') {
 
@@ -167,13 +167,15 @@ class OrderController extends AbstractController
         $session = new Session();
         $po = $session->get( 'po' );
         $OrderID = $po->getId();
+        $session->clear();
+
 
         return $this->render ( 'order/OrderSuccess.html.twig', ['OrderID' => $OrderID]);
     }
 
 
 
-    // display list of previous order to customer when button press in the home page
+    // display list of previous order to customer when button 'My Order History' buttob pressed in the customer home page
 
     /**
      * @Route("/order/history", name="previous-order") methods={"GET","POST"}
@@ -184,7 +186,7 @@ class OrderController extends AbstractController
         $prevOrder = $session->get( 'userId' );
 
         $repo = $this->getDoctrine ()->getRepository ( Purorder::class ); // the type of the entity
-        $myPrevious = $repo->findAll ( ['user' => $prevOrder,] );
+        $myPrevious = $repo->findBy ( ['user' => $prevOrder,] );
 
         if (!$myPrevious) {
             throw $this->createNotFoundException(
@@ -364,7 +366,37 @@ class OrderController extends AbstractController
         );
 
     }
-    ///////////////////////////////////////////////////////// manager form////////////////////////////////////////////////////////////////////
+
+
+
+
+    //  create a function to display the details of an order for the driver
+
+
+    /**
+     * @Route("/driver/orderdetail/{id}", name="view-order-items") methods={"GET","POST"})
+     */
+    public function viewOrdItems($id) {
+
+        $driverlist = $this->getDoctrine()
+            ->getRepository(OrderItem:: class)
+            ->findBy( ['ord' => $id] );
+
+        if (!$driverlist) {
+        /*    throw $this->createNotFoundException(
+                'There are no order items with the following id: ' . $id
+            );*/
+        return $this->redirectToRoute('/index#driver', ['error' => 'order deleted']);
+        }
+
+
+        return $this->render(
+            'order/viewOrderItems.html.twig',
+            array('driverlist' => $driverlist)
+        );
+
+    }
+    ///////////////////////////////////////////////////////// manager forms start ////////////////////////////////////////////////////////////////////
 
 
     // create a form for the manager //
@@ -452,7 +484,7 @@ class OrderController extends AbstractController
 
     }
 
-    // function to delete a particular asset based on id... this function is called using a route in  the dispayAsset.html.twig file.
+    // function to delete a particular ordeer based on id... this function is called using a route in  the dispayAsset.html.twig file.
 
     /**
      * @Route("/mgr/delete/{id}", name="manager-delete") methods={"GET","POST"}))
@@ -476,49 +508,5 @@ class OrderController extends AbstractController
 
     }
 
-
-    // function to update a particular order based on id... the form is updated and submitted to the database. This function is called using a route in the dispayOrder.html.twig file.
-    // and updated recorded displayed to the driver.
-
-    /**
-     * @Route("/mgr/update/{id}", name="mgr-update-order") methods={"GET","POST"}))
-     */
-    /*  public function updateMgrAction(Request $request, $id) {
-
-          $em = $this->getDoctrine()->getManager();
-          $mgrlist = $em->getRepository(Purorder:: class)->find($id);
-
-          if (!$mgrlist) {
-              throw $this->createNotFoundException(
-                  'There are no orders with the following id: ' . $id
-              );
-          }
-
-          $form = $this->createFormBuilder($mgrlist)
-              ->add ( 'id', TextType::class )
-              ->add ( 'total_price', TextType::class )
-              ->add ( 'status', TextType::class  )
-              // ->add ( 'created', TextType::class )//
-              ->add ( 'user', TextType::class )
-              ->add ( 'save', SubmitType::class, array('label' => 'Save') )
-              ->getForm ();
-
-          $form->handleRequest($request);
-
-          if ($form->isSubmitted()) {
-
-              $mgrlist = $form->getData();
-              $em->flush();
-
-              return $this->redirect ( '/mgr/viewPO/'. $id );
-
-          }
-
-          return $this->render(
-              'order/editOrdermgr.html.twig',
-              array('form' => $form->createView())
-          );
-
-      } */
 
 }  // class end
